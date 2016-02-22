@@ -1,12 +1,16 @@
-﻿@{
+﻿@section Scripts {
+    @Scripts.Render("~/bundles/verify")
+}
+
+@{
     ViewBag.Title = "Please Verify Email";
 }
 
 <h2>@ViewBag.Title</h2>
 <div>
     <p>
-        An email was sent to <b>@ViewBag.Email</b>.
+        An email was sent to <b data-bind="text: RegisterEmail"></b>.
         <br /><br />
         Please check your email and verify your email address.
-    </p> 
+    </p>
 </div>

@@ -49,8 +49,10 @@
             url: '/api/Account/Register',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
-        }).done(function (data) {            
-            window.location.href = '/EmailVerification';
+        }).done(function (data) {
+            //console.log("hey there");
+            sessionStorage.setItem("registerEmail", self.registerEmail());
+            window.location.href = '/Home/EmailVerification';
         }).fail(showError);
     }
 

@@ -342,8 +342,16 @@ namespace BuzzerBeater.Controllers
                 return GetErrorResult(result);
             } else
             {
-                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                var callbackUrl = Url.Link("Home", new { controller = "Account", action = "ConfirmEmail", userId = user.Id, code = code });
+                try
+                {
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Link("Default", new { controller = "Account", action = "ConfirmEmail", userId = user.Id, code = code });
+                }
+                catch (Exception e)
+                {
+
+                    throw e;
+                }
                 //var callbackUrl = Url.Action(
                 //    "ConfirmEmail",
                 //    "Account",

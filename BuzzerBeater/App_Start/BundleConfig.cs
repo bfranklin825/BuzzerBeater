@@ -28,6 +28,10 @@ namespace BuzzerBeater
                    "~/Scripts/knockout-{version}.js",
                    "~/Scripts/ko/login.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/verify").Include(
+                "~/Scripts/knockout-{version}.js",
+                "~/Scripts/ko/EmailVerification.js"));
+
         }
     }
 }
