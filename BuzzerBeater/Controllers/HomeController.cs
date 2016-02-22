@@ -14,5 +14,16 @@ namespace BuzzerBeater.Controllers
 
             return View();
         }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult EmailVerification()
+        {
+            return View();
+        }
+
     }
 }

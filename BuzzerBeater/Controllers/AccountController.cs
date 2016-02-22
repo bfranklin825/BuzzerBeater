@@ -66,6 +66,12 @@ namespace BuzzerBeater.Controllers
             };
         }
 
+        [Route("EmailVerification")]
+        public IHttpActionResult EmailVerification()
+        {
+            return Ok();
+        }
+
         // POST api/Account/Logout
         [Route("Logout")]
         public IHttpActionResult Logout()
@@ -327,14 +333,28 @@ namespace BuzzerBeater.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
+                        
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };           
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
+            } else
+            {
+                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Link("Home", new { controller = "Account", action = "ConfirmEmail", userId = user.Id, code = code });
+                //var callbackUrl = Url.Action(
+                //    "ConfirmEmail",
+                //    "Account",
+                //    new { userId = user.Id, code = code },
+                //    protocol: Request.Url.Scheme);
+            
+#if !DEBUG
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account",
+                        "Please confirm your account by clicking this link: <a href=\""
+                        + callbackUrl + "\">Click to Confirm Your Email Address</a>");
+#endif
             }
 
             return Ok();
