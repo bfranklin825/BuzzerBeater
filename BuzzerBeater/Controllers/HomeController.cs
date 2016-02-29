@@ -20,10 +20,19 @@ namespace BuzzerBeater.Controllers
             return View();
         }
 
+     public ActionResult Register()
+        {
+            return View();
+        }
+
         public ActionResult EmailVerification()
         {
             return View();
         }
 
+        public ActionResult ConfirmEmail()
+        {
+            return View();
+        }
     }
 }

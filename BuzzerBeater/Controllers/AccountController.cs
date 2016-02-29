@@ -131,7 +131,7 @@ namespace BuzzerBeater.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -264,9 +264,9 @@ namespace BuzzerBeater.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -333,19 +333,21 @@ namespace BuzzerBeater.Controllers
             {
                 return BadRequest(ModelState);
             }
-                        
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };           
+
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
+            var callbackUrl = "";
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
-            } else
+            }
+            else
             {
                 try
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Link("Default", new { controller = "Account", action = "ConfirmEmail", userId = user.Id, code = code });
+                     callbackUrl = Url.Link("Default", new { controller = "Home", action = "ConfirmEmail", userId = user.Id, code = code });
                 }
                 catch (Exception e)
                 {
@@ -357,7 +359,7 @@ namespace BuzzerBeater.Controllers
                 //    "Account",
                 //    new { userId = user.Id, code = code },
                 //    protocol: Request.Url.Scheme);
-            
+
 #if !DEBUG
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account",
                         "Please confirm your account by clicking this link: <a href=\""
@@ -365,6 +367,30 @@ namespace BuzzerBeater.Controllers
 #endif
             }
 
+            return new TextResult(callbackUrl, Request);
+        }
+
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        [Route("ConfirmEmail")]
+        public async Task<IHttpActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                //return View("Error");
+            }
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            if (result.Succeeded)
+            {
+                var email = UserManager.GetEmail(userId);
+
+                //create new teacher here
+                //var addTeacher = new Teacher { PersonId = new Guid(userId), Email = UserManager.GetEmail(userId) };
+                //db.Teachers.Add(addTeacher);
+                //var newteach = db.Teachers.Find(addTeacher.PersonId);
+                //db.SaveChanges();
+            }
             return Ok();
         }
 
@@ -396,7 +422,7 @@ namespace BuzzerBeater.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }

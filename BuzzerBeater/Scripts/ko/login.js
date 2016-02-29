@@ -43,14 +43,14 @@
             Password: self.registerPassword(),
             ConfirmPassword: self.registerPassword2()
         };
-
+        console.log("sending data...")
         $.ajax({
             type: 'POST',
             url: '/api/Account/Register',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function (data) {
-            //console.log("hey there");
+            sessionStorage.setItem("callbackURL", data)
             sessionStorage.setItem("registerEmail", self.registerEmail());
             window.location.href = '/Home/EmailVerification';
         }).fail(showError);
