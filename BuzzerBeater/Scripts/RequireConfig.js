@@ -1,19 +1,27 @@
-﻿requirejs.config({
+﻿var inDevelopment = true, version = "1";
+
+requirejs.config({
     baseUrl: '../Scripts',
     paths: {
-        'jquery': 'jquery-2.2.0',
-        'bootstrap': 'bootstrap',
+        'require': '../Scripts',
+        'ViewModels': 'ViewModels',
         'ko': 'knockout-3.4.0',
         'koVal': 'knockout.validation.min',
-        'BuzzModel': 'Models/BuzzModel',     
+        'BuzzModel': 'Models/BuzzModel',
         'BindingHandlers': 'Models/BindingHandlers',
-        'CustomFunctions': 'Models/CustomFunctions'
-        //'LoginMain': 'ViewModels/LoginMain'
+        'CustomFunctions': 'Models/CustomFunctions',
+        'LoginMain': 'ViewModels/LoginMain'
     },
+    urlArgs: "v=" + ((inDevelopment)
+       ? (new Date()).getTime()
+       : version),
     shim: {
-        'koVal': {
-            deps: ['knockout-3.4.0']
-        }
+        //'koVal': {
+        //    deps: ['knockout-3.4.0']
+        //},
+        //'ko': {
+        //    deps: ['jquery-2.2.0']
+        //}
         //Dependency section for legacy scripts that can't be loaded via the requriejs 'define()' method
         //EX:
         //'foo': {

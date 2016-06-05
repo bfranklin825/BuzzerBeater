@@ -6,6 +6,8 @@
     return function viewModel() {
         var self = this;
 
+        console.log("HELLO, ITS ME!");
+
         //! Declarations
         var tokenKey = 'accessToken';
 
@@ -25,7 +27,6 @@
 
         self.register = function () {
             self.result('');
-
             var data = {
                 Email: self.registerEmail(),
                 Password: self.registerPassword(),
@@ -66,6 +67,8 @@
         }
 
         self.logout = function () {
+            console.log("HELLO");
+
             self.user('');
             sessionStorage.removeItem(tokenKey)
         }
