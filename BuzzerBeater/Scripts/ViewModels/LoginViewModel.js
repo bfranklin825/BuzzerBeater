@@ -67,10 +67,22 @@
         }
 
         self.logout = function () {
-            console.log("HELLO");
+            var token = sessionStorage.getItem(tokenKey);
+            var headers = {};
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+            }
 
-            self.user('');
-            sessionStorage.removeItem(tokenKey)
+            $.ajax({
+                type: 'POST',
+                url: 'api/Account/Logout',
+                contentType: 'application/json; charset=utf-8',
+                headers: headers
+            }).done(function (data) {
+                self.user('');
+                sessionStorage.removeItem(tokenKey)
+                window.location.href = '/';
+            }).fail(showError);
         }
     }
 });

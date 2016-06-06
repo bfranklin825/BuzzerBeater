@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using System.Web;
 
 namespace BuzzerBeater.DAL
@@ -9,7 +9,39 @@ namespace BuzzerBeater.DAL
     {
         protected override void Seed(BuzzerBeaterContext context)
         {
+            InitializeIdentityForEF(context);
+            base.Seed(context);
+        }
 
+        public static void InitializeIdentityForEF(BuzzerBeaterContext db)
+        {
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
+
+            const string name = "admin@buzzerbeaterpractice.com";
+            const string password = "dumb11";
+            const string roleName = "Admin";
+
+            var role = roleManager.FindByName(roleName);
+            if (role == null)
+            {
+                role = new IdentityRole(roleName);
+                var roleREsult = roleManager.CreateAsync(role);
+            }
+
+            var user = userManager.FindByName(name);
+            if (user == null)
+            {
+                user = new Models.ApplicationUser { UserName = name, Email = name };
+                var result = userManager.Create(user, password);
+                result = userManager.SetLockoutEnabled(user.Id, false);
+            }
+
+            var rolesForUser = userManager.GetRoles(user.Id);
+            if (!rolesForUser.Contains(role.Name))
+            {
+                var result = userManager.AddToRole(user.Id, role.Name);
+            }
         }
     }
 }

@@ -74,6 +74,7 @@ namespace BuzzerBeater.Controllers
 
         // POST api/Account/Logout
         [Route("Logout")]
+        [Authorize]
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
