@@ -44,7 +44,21 @@ namespace BuzzerBeater.Providers
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName, user.Id);
+            string loginPath = "";
+            if (userManager.IsInRole(user.Id, "Teacher"))
+            {
+                loginPath = "/Teacher/Details/";
+            }
+            else if (userManager.IsInRole(user.Id, "Student"))
+            {
+                loginPath = "/Student/Details/";
+            }
+            else if (userManager.IsInRole(user.Id, "Admin"))
+            {
+                loginPath = "/Admin/Details/";
+            }
+
+            AuthenticationProperties properties = CreateProperties(user.UserName, user.Id, loginPath);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -86,11 +100,20 @@ namespace BuzzerBeater.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userName, string userId)
+        //public static AuthenticationProperties CreateProperties(string userName, string userId)
+        //{
+        //    IDictionary<string, string> data = new Dictionary<string, string>
+        //    {
+        //        { "userName", userName }, { "userId", userId }
+        //    };
+        //    return new AuthenticationProperties(data);
+        //}
+
+        public static AuthenticationProperties CreateProperties(string userName, string userId, string loginPath)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }, { "userId", userId }
+                { "userName", userName }, { "userId", userId }, {"loginPath", loginPath  }
             };
             return new AuthenticationProperties(data);
         }

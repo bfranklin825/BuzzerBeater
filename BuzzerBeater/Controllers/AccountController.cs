@@ -278,7 +278,21 @@ namespace BuzzerBeater.Controllers
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName, user.Id);
+                string loginPath = "";
+                if (UserManager.IsInRole(user.Id, "Teacher"))
+                {
+                    loginPath = "/Teacher/Details/";
+                }
+                else if (UserManager.IsInRole(user.Id, "Student"))
+                {
+                    loginPath = "/Student/Details/";
+                }
+                else if (UserManager.IsInRole(user.Id, "Admin"))
+                {
+                    loginPath = "/Admin/Details/";
+                }
+
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName, user.Id, loginPath);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else
