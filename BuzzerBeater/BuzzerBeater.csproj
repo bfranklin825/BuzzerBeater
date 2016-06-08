@@ -237,6 +237,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServiceCallResult.cs" />
+    <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DAL\BuzzerBeaterContext.cs" />
     <Compile Include="DAL\BuzzerBeaterInitializer.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="Models\School.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Teacher.cs" />
+    <Compile Include="Models\TeacherMainModel.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\TestHistory.cs" />
     <Compile Include="Models\TextResult.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Controllers\TeachersController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -272,6 +275,20 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\addition.png" />
+    <Content Include="Content\Images\buzzerbeater_logo.png" />
+    <Content Include="Content\Images\chalkboard.png" />
+    <Content Include="Content\Images\create.png" />
+    <Content Include="Content\Images\create24.png" />
+    <Content Include="Content\Images\delete.png" />
+    <Content Include="Content\Images\delete24.png" />
+    <Content Include="Content\Images\division.png" />
+    <Content Include="Content\Images\edit.png" />
+    <Content Include="Content\Images\edit24.png" />
+    <Content Include="Content\Images\multiplication.png" />
+    <Content Include="Content\Images\subtraction.png" />
+    <Content Include="Content\Images\view.png" />
+    <Content Include="Content\Images\view24.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -359,6 +376,13 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
+    <Content Include="Views\Teachers\Create.cshtml" />
+    <Content Include="Views\Teachers\Delete.cshtml" />
+    <Content Include="Views\Teachers\Details.cshtml" />
+    <Content Include="Views\Teachers\Edit.cshtml" />
+    <Content Include="Views\Teachers\Index.cshtml" />
+    <Content Include="Views\Teacher\Details.cshtml" />
+    <Content Include="Views\Teacher\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -371,6 +395,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201603121618175_initial.resx">
       <DependentUpon>201603121618175_initial.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

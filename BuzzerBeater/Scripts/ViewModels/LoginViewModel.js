@@ -87,10 +87,13 @@
                 url: '/Token',
                 data: loginData
             }).done(function (data) {
+                console.log(data);
+                console.log(data.userId);
                 self.user(data.userName);
                 // Cache the access token in session storage.
                 sessionStorage.setItem(tokenKey, data.access_token);
-                window.location.href = '/';
+                //window.location.href = '/';
+                window.location.href = '/Teacher/Details/' + data.userId;
             }).fail(showError);
         }
 

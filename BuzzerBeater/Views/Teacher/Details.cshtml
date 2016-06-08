@@ -1,0 +1,178 @@
+﻿@model BuzzerBeater.Models.TeacherMainModel
+
+@{
+    ViewBag.Title = "My Account";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Account</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.Grade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.Grade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.School)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.School)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.Email)
+        </dd>
+
+        <dt>
+            Password
+        </dt>
+
+        <dd>
+            [@Html.ActionLink("Change your password", "ChangePassword", "Manage", new { Teacher_PersonId = Model.Teacher.PersonId }, null)]
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit My Personal Information", "Edit", new { id = Model.Teacher.PersonId }) &nbsp;|&nbsp;
+    @Html.ActionLink("Create a New Class", "Create", "Class", new { id = Model.Teacher.PersonId }, null) &nbsp;|&nbsp;
+    [Create a New Test]
+    @*@Html.ActionLink("Create a New Test", "Create", "Test", new { id = Model.Teacher.PersonId }, null)*@
+</p>
+
+<div class="panel-group" id="accordion">
+    <!-- accordion 1 -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <!-- panel-heading -->
+            <h4 class="panel-title">
+                <!-- title 1 -->
+                <a data-toggle="collapse" data-parent="#accordion" href="#accordionOne">
+                    Tests
+                </a>
+            </h4>
+        </div>
+        <!-- panel body -->
+        <div id="accordionOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Test Name</th>
+                            <th># of Questions</th>
+                            <th>Active</th>
+                            <th>Default Test</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Tests)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(t => item.TestName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(t => item.NumberOfQuestions)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(t => item.Active)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(t => item.DefaultTest)
+                            </td>
+                            <td>
+                                @Html.ActionLink("View Test", "Details", "Tests", new { id = item.TestId }, null)
+                            </td>
+                            @if (!item.DefaultTest)
+                            {
+                                <td>
+                                    @Html.ActionLink("Edit Test", "Edit", "Tests", new { id = item.TestId }, null)
+                                </td>
+                            }
+                            <td>
+                                @Html.ActionLink("Delete Test", "Delete", "Tests", new { id = item.TestId }, null)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <!-- accordion 2 -->
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <!-- title 2 -->
+                <a data-toggle="collapse" data-parent="#accordion" href="#accordionTwo">
+                    Classes
+                </a>
+            </h4>
+        </div>
+        <!-- panel body -->
+        <div id="accordionTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Class Name</th>
+                            <th>Year</th>
+                            <th># of Students</th>
+                            <th colspan="3" class="text-center">View / Edit / Delete</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Classes)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelitem => item.ClassName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelitem => item.Year)
+                            </td>
+                            <td>
+                                @item.Students.Count
+                            </td>
+                            <td class="text-right">
+                                <a href='@Url.Action("Details", "Class", new { id = item.ClassId })'>
+                                    <img src='@Url.Content("~/Content/Images/view24.png")' alt="View Class" title="View Class" />
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href='@Url.Action("Edit", "Class", new { id = item.ClassId })'>
+                                    <img src='@Url.Content("~/Content/Images/edit24.png")' alt="Edit Class" title="Edit Class" />
+                                </a>
+                            </td>
+                            <td class="text-left">
+                                <a href='@Url.Action("Delete", "Class", new { id = item.ClassId })'>
+                                    <img src='@Url.Content("~/Content/Images/delete24.png")' alt="Delete Class" title="Delete Class" />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
