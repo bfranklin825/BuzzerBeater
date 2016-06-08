@@ -6,17 +6,20 @@
     return function viewModel() {
         var self = this;
 
-        console.log("HELLO, ITS ME!");
-
         //! Declarations
         var tokenKey = 'accessToken';
 
         self.result = ko.observable();
         self.user = ko.observable();
 
-        self.registerEmail = ko.observable();
+        self.registerEmail = ko.observable(sessionStorage.getItem("registerEmail") || "");
         self.registerPassword = ko.observable();
         self.registerPassword2 = ko.observable();
+
+        self.CallbackURL = ko.observable(sessionStorage.getItem("callbackURL") || "");
+
+        console.log(self.registerEmail());
+        console.log(self.CallbackURL());
 
         self.loginEmail = ko.observable();
         self.loginPassword = ko.observable();
@@ -32,17 +35,42 @@
                 Password: self.registerPassword(),
                 ConfirmPassword: self.registerPassword2()
             };
-            console.log("sending data...")
+
+            //$.ajax({
+            //    type: 'POST',
+            //    url: '/api/Account/Register',
+            //    contentType: 'application/json; charset=utf-8',
+            //    data: JSON.stringify(data)
+            //}).done(function (data) {
+            //    sessionStorage.setItem("callbackURL", data)
+            //    sessionStorage.setItem("registerEmail", self.registerEmail());
+            //    window.location.href = '/Home/EmailVerification';
+            //}).fail(showError);
+
             $.ajax({
-                type: 'POST',
+                type: "POST",
                 url: '/api/Account/Register',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function (data) {
-                sessionStorage.setItem("callbackURL", data)
-                sessionStorage.setItem("registerEmail", self.registerEmail());
-                window.location.href = '/Home/EmailVerification';
-            }).fail(showError);
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data) {
+                    sessionStorage.setItem("callbackURL", data)
+                    sessionStorage.setItem("registerEmail", self.registerEmail());
+                    window.location.href = '/Home/EmailVerification';
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                    console.log(ajaxOptions);
+                    console.log(thrownError);
+
+
+                    self.result(JSON.parse(xhr.responseText).Message);
+                },
+                complete: function (data) {
+
+                }
+            });
+
         }
 
         self.login = function () {

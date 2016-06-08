@@ -18,7 +18,7 @@ namespace BuzzerBeater.DAL
             var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
 
-            const string name = "admin@buzzerbeaterpractice.com";
+            const string name = "bfranklin825@gmail.com";
             const string password = "dumb11";
             const string roleName = "Admin";
 
@@ -26,7 +26,7 @@ namespace BuzzerBeater.DAL
             if (role == null)
             {
                 role = new IdentityRole(roleName);
-                var roleREsult = roleManager.CreateAsync(role);
+                var roleResult = roleManager.CreateAsync(role);
             }
 
             var user = userManager.FindByName(name);
@@ -41,6 +41,20 @@ namespace BuzzerBeater.DAL
             if (!rolesForUser.Contains(role.Name))
             {
                 var result = userManager.AddToRole(user.Id, role.Name);
+            }
+
+            var teacher = roleManager.FindByName("Teacher");
+            if (teacher == null)
+            {
+                teacher = new IdentityRole("Teacher");
+                var teacherResult = roleManager.CreateAsync(role);
+            }
+
+            var student = roleManager.FindByName("Student");
+            if (student == null)
+            {
+                student = new IdentityRole("Student");
+                var teacherResult = roleManager.CreateAsync(role);
             }
         }
     }

@@ -40,7 +40,7 @@ namespace BuzzerBeater
                 manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
-        }      
+        }
     }
 
     public class ApplicationRoleManager : RoleManager<IdentityRole>

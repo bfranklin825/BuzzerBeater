@@ -1,7 +1,13 @@
-﻿using System;
+﻿using BuzzerBeater.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace BuzzerBeater.Controllers
@@ -20,7 +26,7 @@ namespace BuzzerBeater.Controllers
             return View();
         }
 
-     public ActionResult Register()
+        public ActionResult Register()
         {
             return View();
         }
@@ -30,9 +36,35 @@ namespace BuzzerBeater.Controllers
             return View();
         }
 
-        public ActionResult ConfirmEmail()
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            return View();
+            //var ac = new AccountController(Request.GetOwinContext().GetUserManager<ApplicationUserManager>());
+            //TextResult result = await ac.ConfirmEmail(userId, code);
+
+            var UserManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            if (result.Succeeded)
+            {
+                var email = UserManager.GetEmail(userId);
+
+                //create new teacher here
+                //var addTeacher = new Teacher { PersonId = new Guid(userId), Email = UserManager.GetEmail(userId) };
+                //db.Teachers.Add(addTeacher);
+                //var newteach = db.Teachers.Find(addTeacher.PersonId);
+                //db.SaveChanges();
+
+                return View();
+            }
+            else
+            {
+                return View("Error");
+            }
         }
     }
 }

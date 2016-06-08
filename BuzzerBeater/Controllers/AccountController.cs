@@ -16,6 +16,8 @@ using Microsoft.Owin.Security.OAuth;
 using BuzzerBeater.Models;
 using BuzzerBeater.Providers;
 using BuzzerBeater.Results;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace BuzzerBeater.Controllers
 {
@@ -28,6 +30,11 @@ namespace BuzzerBeater.Controllers
 
         public AccountController()
         {
+        }
+
+        public AccountController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
         }
 
         public AccountController(ApplicationUserManager userManager,
@@ -332,7 +339,15 @@ namespace BuzzerBeater.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                StringBuilder sb = new StringBuilder();
+                foreach (ModelState val in ModelState.Values)
+                {
+                    foreach (ModelError error in val.Errors)
+                    {
+                        sb.Append(error.ErrorMessage);
+                    }
+                }
+                return BadRequest(sb.ToString());
             }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
@@ -348,19 +363,13 @@ namespace BuzzerBeater.Controllers
                 try
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                     callbackUrl = Url.Link("Default", new { controller = "Home", action = "ConfirmEmail", userId = user.Id, code = code });
+                    callbackUrl = Url.Link("Default", new { controller = "Home", action = "ConfirmEmail", userId = user.Id, code = code });
                 }
                 catch (Exception e)
                 {
 
                     throw e;
                 }
-                //var callbackUrl = Url.Action(
-                //    "ConfirmEmail",
-                //    "Account",
-                //    new { userId = user.Id, code = code },
-                //    protocol: Request.Url.Scheme);
-
 #if !DEBUG
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account",
                         "Please confirm your account by clicking this link: <a href=\""
@@ -368,13 +377,13 @@ namespace BuzzerBeater.Controllers
 #endif
             }
 
-            return new TextResult(callbackUrl, Request);
+            return new TextResult(JsonConvert.SerializeObject(callbackUrl), Request);
         }
 
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         [Route("ConfirmEmail")]
-        public async Task<IHttpActionResult> ConfirmEmail(string userId, string code)
+        public async Task<TextResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
@@ -392,7 +401,7 @@ namespace BuzzerBeater.Controllers
                 //var newteach = db.Teachers.Find(addTeacher.PersonId);
                 //db.SaveChanges();
             }
-            return Ok();
+            return new TextResult("Success", Request);
         }
 
         // POST api/Account/RegisterExternal
@@ -455,11 +464,13 @@ namespace BuzzerBeater.Controllers
 
             if (!result.Succeeded)
             {
+                StringBuilder sb = new StringBuilder();
                 if (result.Errors != null)
                 {
                     foreach (string error in result.Errors)
                     {
-                        ModelState.AddModelError("", error);
+                        sb.Append(error);
+                        ModelState.AddModelError("RegisterError", error);
                     }
                 }
 
@@ -469,7 +480,7 @@ namespace BuzzerBeater.Controllers
                     return BadRequest();
                 }
 
-                return BadRequest(ModelState);
+                return BadRequest(sb.ToString());
             }
 
             return null;

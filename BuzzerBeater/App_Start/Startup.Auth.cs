@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using BuzzerBeater.Providers;
 using BuzzerBeater.Models;
+using BuzzerBeater.DAL;
 
 namespace BuzzerBeater
 {
@@ -31,7 +32,7 @@ namespace BuzzerBeater
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-          
+
             // Configure the application for OAuth based flow
             PublicClientId = "self";
             OAuthOptions = new OAuthAuthorizationServerOptions

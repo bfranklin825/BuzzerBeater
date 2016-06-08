@@ -61,7 +61,7 @@ namespace BuzzerBeater.Migrations
             tests.ForEach(t => context.Tests.AddOrUpdate(n => n.TestName));
             context.SaveChanges();
 
-            //clear the default questions from the database            
+            //clear the default questions from the database
             context.Questions.RemoveRange(context.Questions.Where(q => q.Test.DefaultTest == true));
 
             var questions = new List<Question>
@@ -132,7 +132,7 @@ namespace BuzzerBeater.Migrations
                 new Question{LeftOperand=7, RightOperand=9, Operator="+", CorrectAnswer=16, Test=tests.Single(i => i.TestName == "Addition")},
                 new Question{LeftOperand=6, RightOperand=8, Operator="+", CorrectAnswer=14, Test=tests.Single(i => i.TestName == "Addition")},
                 new Question{LeftOperand=1, RightOperand=4, Operator="+", CorrectAnswer=5, Test=tests.Single(i => i.TestName == "Addition")}, //60
-                
+
                 new Question{LeftOperand=8, RightOperand=4, Operator="+", CorrectAnswer=12, Test=tests.Single(i => i.TestName == "Addition")},
                 new Question{LeftOperand=3, RightOperand=8, Operator="+", CorrectAnswer=11, Test=tests.Single(i => i.TestName == "Addition")},
                 new Question{LeftOperand=6, RightOperand=3, Operator="+", CorrectAnswer=9, Test=tests.Single(i => i.TestName == "Addition")},
@@ -397,7 +397,7 @@ namespace BuzzerBeater.Migrations
                 new Question{LeftOperand=5, RightOperand=1, Operator="x", CorrectAnswer=5, Test=tests.Single(i => i.TestName == "Multiplication")},
                 new Question{LeftOperand=5, RightOperand=1, Operator="x", CorrectAnswer=45, Test=tests.Single(i => i.TestName == "Multiplication")}, //100
 
-                //divison
+                //division
                 new Question{LeftOperand=18, RightOperand=9, Operator="÷", CorrectAnswer=2, Test=tests.Single(i => i.TestName == "Division")},
                 new Question{LeftOperand=16, RightOperand=8, Operator="÷", CorrectAnswer=2, Test=tests.Single(i => i.TestName == "Division")},
                 new Question{LeftOperand=7, RightOperand=7, Operator="÷", CorrectAnswer=1, Test=tests.Single(i => i.TestName == "Division")},

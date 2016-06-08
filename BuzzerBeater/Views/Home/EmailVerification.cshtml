@@ -1,19 +1,15 @@
-﻿@section Scripts {
-    @Scripts.Render("~/bundles/verify")
-}
-
-@{
+﻿@{
     ViewBag.Title = "Please Verify Email";
 }
-
+<script type="text/javascript" data-main="LoginMain.js" src="../Scripts/require.js"></script>
 <h2>@ViewBag.Title</h2>
 <div>
     <p>
-        An email was sent to <b data-bind="text: RegisterEmail"></b>.
+        An email was sent to <b data-bind="text: registerEmail"></b>.
         <br /><br />
         Please check your email and verify your email address.
     </p>
     <p>
-        or use this: <a data-bind="attr: { href: CallbackURL, title: 'Confirm Email' }"></a>
+        or use this: <a data-bind="attr: { href: CallbackURL, title: 'Confirm Email' }">Confirm Email</a>
     </p>
 </div>

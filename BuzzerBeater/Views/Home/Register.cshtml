@@ -24,5 +24,11 @@
             </div>
         </form>
     </div>
-    <div class="col-sm-8"></div>    
+    <div class="col-sm-12">
+        <div class="alert alert-danger" role="alert" data-bind="visible: result" style="display: none;">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            <span data-bind="text: result"></span>
+        </div>
+    </div>
 </div>
