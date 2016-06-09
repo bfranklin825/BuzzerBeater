@@ -1,7 +1,7 @@
 ﻿var inDevelopment = true, version = "1";
 
 requirejs.config({
-    baseUrl: '../Scripts',
+    baseUrl: '/Scripts',
     paths: {
         'require': '../Scripts',
         'ViewModels': 'ViewModels',

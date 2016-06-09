@@ -1,0 +1,82 @@
+﻿@model BuzzerBeater.Models.Class
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Class</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.ClassName) &nbsp;|&nbsp; @Html.DisplayFor(model => model.Year)</h4>
+    <hr />
+</div>
+
+<div class="panel panel-default">
+    <!-- accordion 1 -->
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <!-- title 1 -->
+            <a data-toggle="collapse" data-parent="#accordion" href="#accordionOne">
+                Students
+            </a>
+        </h4>
+    </div>
+    <!-- panel body -->
+    <div id="accordionOne" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>User Name</th>
+                        <th>Password</th>
+                        <th></th>
+                        <th colspan="3" class="text-center">View / Edit / Delete</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.Students)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.Password)
+                        </td>
+                        <td class="text-center">
+                            @Html.ActionLink("View Test History", "History", "Student", new { id = item.PersonId }, new { @class = "text-center" })
+                        </td>
+                        <td class="text-right">
+                            <a href='@Url.Action("Details", "Student", new { id = item.PersonId })'>
+                                <img src='@Url.Content("~/Content/Images/view24.png")' alt="View Student" title="View Student" />
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a href='@Url.Action("Edit", "Student", new { id = item.PersonId })'>
+                                <img src='@Url.Content("~/Content/Images/edit24.png")' alt="Edit Student" title="Edit Student" />
+                            </a>
+                        </td>
+                        <td class="text-left">
+                            <a href='@Url.Action("Delete", "Student", new { id = item.PersonId })'>
+                                <img src='@Url.Content("~/Content/Images/delete24.png")' alt="Delete Student" title="Delete Student" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ClassId }) |
+    @Html.ActionLink("Back to My Account", "Details", "Teacher", new { id = Model.Teacher.PersonId }, null)
+</p>

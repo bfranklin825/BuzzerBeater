@@ -1,5 +1,6 @@
 ﻿
 @using Microsoft.AspNet.Identity
+<script type="text/javascript" data-main="LoginMain.js" src="/Scripts/require.js"></script>
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("Logout", "api/Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))

@@ -46,7 +46,7 @@
             //    sessionStorage.setItem("registerEmail", self.registerEmail());
             //    window.location.href = '/Home/EmailVerification';
             //}).fail(showError);
-
+            
             $.ajax({
                 type: "POST",
                 url: '/api/Account/Register',
@@ -106,7 +106,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'api/Account/Logout',
+                url: '/api/Account/Logout',
                 contentType: 'application/json; charset=utf-8',
                 headers: headers
             }).done(function (data) {
